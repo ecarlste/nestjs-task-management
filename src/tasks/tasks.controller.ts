@@ -10,6 +10,7 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
@@ -24,7 +25,14 @@ import { TasksService } from './tasks.service';
 export class TasksController {
   private logger = new Logger('TasksController');
 
-  constructor(private tasksService: TasksService) {}
+  constructor(
+    private tasksService: TasksService,
+    private configService: ConfigService,
+  ) {
+    this.logger.log(
+      `The TEST_VALUE is set to '${this.configService.get('TEST_VALUE')}'`,
+    );
+  }
 
   @Post()
   createTask(
